@@ -5,6 +5,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.widget.Toast;
 
 /**
  * Created by Administrator on 2017/7/5.
@@ -29,6 +30,9 @@ public class ParallaxEffectHelper implements SensorEventListener {
             return;
         }
         mGyroscopeSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+        if (mGyroscopeSensor == null) {
+            Toast.makeText(context, "未发现陀螺仪", Toast.LENGTH_SHORT).show();
+        }
     }
 
     protected void onResume() {
@@ -43,13 +47,13 @@ public class ParallaxEffectHelper implements SensorEventListener {
         }
     }
 
-    protected void setGyroEventListener(IGyroEventListener gyroEventListener){
+    protected void setGyroEventListener(IGyroEventListener gyroEventListener) {
         mGyroEventListener = gyroEventListener;
     }
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
-        if(mGyroEventListener != null){
+        if (mGyroEventListener != null) {
             mGyroEventListener.onGyroScopeChange(sensorEvent.values[SensorManager.DATA_Y], sensorEvent.values[SensorManager.DATA_X]);
         }
     }
